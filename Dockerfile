@@ -16,13 +16,13 @@ RUN apt-get update \
 
 RUN npm init -y &&  \
     npm i  puppeteer-core@23.11.1 \
-    npm i mongoose@8.9.2 \
-    npm i whatsapp-web.js@1.26.0 \
-    npm i express@4.21.2 \
-    npm i cors@2.8.5 \
-    npm i dotenv@16.4.7 \
-    npm i qrcode-terminal@0.12.0 \
-    npm i wwebjs-mongo@1.1.0 \
+    mongoose@8.9.2 \
+    whatsapp-web.js@1.26.0 \
+    express@4.21.2 \
+    cors@2.8.5 \
+    dotenv@16.4.7 \
+    qrcode-terminal@0.12.0 \
+    wwebjs-mongo@1.1.0 && \
     # Add user so we don't need --no-sandbox.
     # same layer as npm install to keep re-chowned files from using up several hundred MBs more space
     && groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
