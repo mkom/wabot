@@ -1,3 +1,2 @@
-2024/12/27-13:03:48.110 1274 Reusing MANIFEST D:\WebCode\waBot\my-session\session-client-id\Default\Local Storage\leveldb/MANIFEST-000001
-2024/12/27-13:03:48.121 1274 Recovering log #7
-2024/12/27-13:03:48.122 1274 Reusing old log D:\WebCode\waBot\my-session\session-client-id\Default\Local Storage\leveldb/000007.log 
+2024/12/27-19:52:39.151 421c Creating DB D:\WebCode\waBot\my-session\session-client-id\Default\Local Storage\leveldb since it was missing.
+2024/12/27-19:52:39.179 421c Reusing MANIFEST D:\WebCode\waBot\my-session\session-client-id\Default\Local Storage\leveldb/MANIFEST-000001

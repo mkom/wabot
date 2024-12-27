@@ -3,28 +3,14 @@ const express = require('express');
 const cors = require('cors');
 const qrcode = require('qrcode-terminal');
 require('dotenv').config();
-const puppeteer = require('puppeteer');
 
-(async () => {
-    const browser = await puppeteer.launch({
-        executablePath: '/usr/bin/google-chrome-stable',
-    headless: true,  // Ensure Puppeteer runs in headless mode
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      });
+const puppeteer = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+const fs = require('fs');
 
-  const page = await browser.newPage();
-  await page.goto('https://example.com');
-  console.log(await page.title());
-  await browser.close();
-})();
-
-//Membuat instance client dengan autentikasi lokal
-const client = new Client({
-    authStrategy: new LocalAuth({ clientId: "client-id", dataPath: './my-session' }) // Menggunakan autentikasi lokal untuk menyimpan sesi
-});
 
 const app = express();
-app.use(express.json());  // Menggunakan middleware untuk parsing JSON
+app.use(express.json()); 
 
 // CORS configuration
 const corsOptions = {
@@ -33,14 +19,26 @@ const corsOptions = {
     allowedHeaders: 'Content-Type, Authorization',
 };
   
-  app.use(cors(corsOptions));
+app.use(cors(corsOptions));
+
+// Tambahkan plugin stealth
+puppeteer.use(StealthPlugin());
+
+//Membuat instance client dengan autentikasi lokal
+const client = new Client({
+    authStrategy: new LocalAuth({ clientId: "client-id", dataPath: './my-session' }), // Menggunakan autentikasi lokal untuk menyimpan sesi
+    puppeteer: {
+        headless: true, // Mode headless
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    },
+});
+
 
 // Menampilkan QR code untuk autentikasi
 client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
 });
 
-// Menyambung ke WhatsApp
 client.on('ready', () => {
     console.log('Client is ready!');
 
@@ -58,31 +56,6 @@ client.on('ready', () => {
         });
 
 
-});
-
-//endpoint kirim pesan
-app.post('/api/notify', (req, res) => {
-    const { number, bodyMessage } = req.body;
-
-    if (!number || !bodyMessage) {
-        return res.status(400).json({ success: false, message: 'Nomor  dan detail transaksi diperlukan.' });
-    }
-    const decodedBodyMessage = decodeURIComponent(bodyMessage);
-     const message = `${decodedBodyMessage}`;
-    client.sendMessage(`${number}@c.us`, message)
-        .then(() => {
-            res.status(200).json({ success: true, message: 'Pesan terkirim ke '+number });
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).json({ success: false, message: 'Gagal mengirim Pesan ke '+number});
-        });
-});
-
-
-// Mendengarkan pesan masuk
-client.on('message', message => {
-    console.log(message.body);
 });
 
 // Menjalankan server pada port tertentu (misalnya 4001)

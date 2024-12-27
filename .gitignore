@@ -7,5 +7,6 @@ package-lock.json
 //Dockerfile
 index__.js
 index_.js
+index___.js
 RemoteAuth.zip
 .env
