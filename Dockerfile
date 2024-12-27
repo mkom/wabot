@@ -2,7 +2,7 @@
 FROM debian:latest
 
 # Use an appropriate base image that includes Node.js (e.g., official Node.js image)
-FROM node:16-slim
+FROM node:14-slim
 
 RUN apt-get update \
     && apt-get install -y wget gnupg \
@@ -15,7 +15,7 @@ RUN apt-get update \
 
 
 RUN npm init -y &&  \
-    npm i puppeteer \
+    npm i puppeteer@5.5.0 \
     # Add user so we don't need --no-sandbox.
     # same layer as npm install to keep re-chowned files from using up several hundred MBs more space
     && groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
