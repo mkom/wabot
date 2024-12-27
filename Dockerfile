@@ -3,31 +3,10 @@ FROM node:18
 
 # Install dependencies for Chromium
 RUN apt-get update && apt-get install -y \
-    wget \
     curl \
-    gnupg2 \
+    gnupg \
     ca-certificates \
-    chromium-browser \
-    libx11-xcb1 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxi6 \
-    libgdk-pixbuf2.0-0 \
-    libnss3 \
-    libasound2 \
-    libatk-bridge2.0-0 \
-    libatk1.0-0 \
-    libcups2 \
-    libxrandr2 \
-    libgbm1 \
-    libnspr4 \
-    fonts-liberation \
-    libappindicator3-1 \
-    libu2f-udev \
-    libv4l-0 \
-    libxshmfence1 \
-    xdg-utils \
-    --no-install-recommends
+    chromium-browser
 
 # Install Chromium (stable)
 RUN curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | tee /etc/apt/trusted.gpg.d/google.asc \
