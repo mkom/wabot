@@ -2,8 +2,10 @@ const { Client, LocalAuth } = require('whatsapp-web.js');
 const express = require('express');
 const cors = require('cors');
 const qrcode = require('qrcode-terminal');
+require('dotenv').config();
 
-// Membuat instance client dengan autentikasi lokal
+
+//Membuat instance client dengan autentikasi lokal
 const client = new Client({
     authStrategy: new LocalAuth({ clientId: "client-id", dataPath: './my-session' }) // Menggunakan autentikasi lokal untuk menyimpan sesi
 });
@@ -16,7 +18,7 @@ const corsOptions = {
     origin: ['https://rt5vc.vercel.app', 'http://localhost:3000'], // Replace with your allowed origin
     methods: 'GET, POST, PUT, DELETE, OPTIONS',
     allowedHeaders: 'Content-Type, Authorization',
-  };
+};
   
   app.use(cors(corsOptions));
 
@@ -30,7 +32,7 @@ client.on('ready', () => {
     console.log('Client is ready!');
 
     // Mengirim pesan setelah siap
-    const number = '6281717889797'; // Ganti dengan nomor tujuan
+    const number = process.env.ADMIN_NUMBER; // Ganti dengan nomor tujuan
     const message = 'Hello, this is a test message from my bot!';
 
     // Format nomor: gunakan kode negara tanpa tanda "+" (misalnya untuk Indonesia: 6281234567890)
@@ -70,7 +72,7 @@ client.on('message', message => {
     console.log(message.body);
 });
 
-// Menjalankan server pada port tertentu (misalnya 3000)
+// Menjalankan server pada port tertentu (misalnya 4001)
 app.listen(4001, () => {
     console.log('Server running on port 4001');
 });

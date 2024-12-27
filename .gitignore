@@ -3,3 +3,9 @@ node_modules
 .wwebjs_auth
 .wwebjs_cache
 package-lock.json
+.dockerignore
+Dockerfile
+index__.js
+index_.js
+RemoteAuth.zip
+.env
