@@ -1,26 +1,18 @@
-# Use an official Node.js runtime as a parent image
-FROM node:18
+# Use a base Debian image
+FROM debian:latest
 
-# Install dependencies for Chromium
+# Install necessary dependencies and Chromium
 RUN apt-get update && apt-get install -y \
     curl \
     gnupg \
     ca-certificates \
-    chromium-browser
+    chromium
 
-# Install Chromium (stable)
-RUN curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | tee /etc/apt/trusted.gpg.d/google.asc \
-    && sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/google.asc] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list' \
-    && apt-get update \
-    && apt-get install -y chromium-browser
+# Verify that Chromium was installed successfully
+RUN which chromium
 
-RUN apt-get update && apt-get install -y chromium
-# Verify Chromium installation (this will print the path of Chromium)
-RUN chromium-browser --version
-RUN find / -name chromium-browser
-RUN which chromium || which chromium-browser
-
-
+# Optionally, you can check the Chromium version
+RUN chromium --version
 # Set work directory
 WORKDIR /app
 
