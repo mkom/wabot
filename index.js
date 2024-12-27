@@ -3,11 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const qrcode = require('qrcode-terminal');
 require('dotenv').config();
-
-const puppeteer = require('puppeteer-extra');
-const StealthPlugin = require('puppeteer-extra-plugin-stealth');
-const fs = require('fs');
-
+const puppeteer = require('puppeteer');
 
 const app = express();
 app.use(express.json()); 
@@ -21,16 +17,10 @@ const corsOptions = {
   
 app.use(cors(corsOptions));
 
-// Tambahkan plugin stealth
-puppeteer.use(StealthPlugin());
-
 //Membuat instance client dengan autentikasi lokal
 const client = new Client({
-    authStrategy: new LocalAuth({ clientId: "client-id", dataPath: './my-session' }), // Menggunakan autentikasi lokal untuk menyimpan sesi
-    puppeteer: {
-        headless: true, // Mode headless
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    },
+    puppeteer: { args: ["--no-sandbox", "--disable-dev-shm-usage"] },
+    authStrategy: new LocalAuth({ clientId: "client-id", dataPath: './my-session' }) // Menggunakan autentikasi lokal untuk menyimpan sesi
 });
 
 
