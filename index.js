@@ -30,6 +30,7 @@ client.on('qr', (qr) => {
 });
 
 client.on('ready', () => {
+    console.log('QR Code:', qr);
     console.log('Client is ready!');
 
     // Mengirim pesan setelah siap
@@ -48,10 +49,24 @@ client.on('ready', () => {
 
 });
 
+client.on('authenticated', () => {
+    console.log('WhatsApp client authenticated');
+});
+
+client.on('auth_failure', (msg) => {
+    console.log('Authentication failure:', msg);
+});
+
+client.on('disconnected', (reason) => {
+    console.log('WhatsApp client disconnected:', reason);
+});
+
 // Menjalankan server pada port tertentu (misalnya 4001)
 app.listen(4001, () => {
     console.log('Server running on port 4001');
 });
 
 // Menjalankan client
-client.initialize();
+client.initialize().catch(err => {
+    console.error('Error initializing WhatsApp client:', err);
+});
