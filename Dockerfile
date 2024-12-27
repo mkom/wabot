@@ -8,15 +8,28 @@ RUN apt-get update \
     && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
     && apt-get update \
     && apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
-    --no-install-recommends \
+    # Install dependencies for Puppeteer
+    && apt-get install -y \
+        ca-certificates \
+        fonts-liberation \
+        libappindicator3-1 \
+        libatk-bridge2.0-0 \
+        libatk1.0-0 \
+        libcups2 \
+        libgdk-pixbuf2.0-0 \
+        libnspr4 \
+        libnss3 \
+        libx11-xcb1 \
+        libxcomposite1 \
+        libxrandr2 \
+        xdg-utils \
+        --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Add user so we don't need --no-sandbox.
-# Create the user and setup permissions.
 RUN groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
     && mkdir -p /home/pptruser/Downloads \
     && chown -R pptruser:pptruser /home/pptruser
-
 
 # Install app dependencies
 RUN npm install puppeteer@23.11.1
