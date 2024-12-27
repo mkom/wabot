@@ -18,7 +18,7 @@ ENV PUPPETEER_CACHE_DIR=/home/web/.cache
 
 WORKDIR /usr/src/app
 
-COPY . .
+COPY package.json ./
 
 RUN npm install
 
