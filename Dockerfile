@@ -2,7 +2,7 @@
 FROM debian:latest
 
 # Use an appropriate base image that includes Node.js (e.g., official Node.js image)
-FROM node:14-slim
+FROM node:18-slim
 
 RUN apt-get update \
     && apt-get install -y wget gnupg \
@@ -15,7 +15,14 @@ RUN apt-get update \
 
 
 RUN npm init -y &&  \
-    npm i puppeteer@5.5.0 \
+    npm i  puppeteer-core@23.11.1 \
+    && npm i mongoose@8.9.2 \
+    && npm i whatsapp-web.js@1.26.0 \
+    && npm i express@4.21.2 \
+    && npm i cors@2.8.5 \
+    && npm i dotenv@16.4.7 \
+    && npm i qrcode-terminal@0.12.0 \
+    && npm i wwebjs-mongo@1.1.0 \
     # Add user so we don't need --no-sandbox.
     # same layer as npm install to keep re-chowned files from using up several hundred MBs more space
     && groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
@@ -34,7 +41,7 @@ CMD ["google-chrome-stable"]
 WORKDIR /app
 
 # Copy the package.json and package-lock.json (if available)
-COPY package*.json ./
+#COPY package*.json ./
 
 
 # Install app dependencies
