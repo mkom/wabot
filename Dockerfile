@@ -2,7 +2,7 @@
 FROM debian:latest
 
 # Use an appropriate base image that includes Node.js (e.g., official Node.js image)
-FROM node:18-slim
+FROM node:21-slim
 
 RUN apt-get update \
     && apt-get install -y wget gnupg \
@@ -14,24 +14,16 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 
-    RUN npm init -y && \
-    npm install puppeteer-core@23.11.1 \
-    mongoose@8.9.2 \
-    whatsapp-web.js@1.26.0 \
-    express@4.21.2 \
-    cors@2.8.5 \
-    dotenv@16.4.7 \
-    qrcode-terminal@0.12.0 \
-    wwebjs-mongo@1.1.0 && \
-    # Add user so we don't need --no-sandbox. \
-    # same layer as npm install to keep re-chowned files from using up several hundred MBs more space \
-    groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser && \
-    mkdir -p /home/pptruser/Downloads && \
-    chown -R pptruser:pptruser /home/pptruser && \
-    chown -R pptruser:pptruser /node_modules && \
-    chown -R pptruser:pptruser /package.json && \
-    chown -R pptruser:pptruser /package-lock.json
-
+RUN npm init -y &&  \
+    npm i puppeteer@23.11.1 \
+    # Add user so we don't need --no-sandbox.
+    # same layer as npm install to keep re-chowned files from using up several hundred MBs more space
+    && groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
+    && mkdir -p /home/pptruser/Downloads \
+    && chown -R pptruser:pptruser /home/pptruser \
+    && chown -R pptruser:pptruser /node_modules \
+    && chown -R pptruser:pptruser /package.json \
+    && chown -R pptruser:pptruser /package-lock.json
 
 # Run everything after as non-privileged user.
 USER pptruser
@@ -42,7 +34,7 @@ CMD ["google-chrome-stable"]
 WORKDIR /app
 
 # Copy the package.json and package-lock.json (if available)
-#COPY package*.json ./
+COPY package*.json ./
 
 
 # Install app dependencies
