@@ -3,13 +3,12 @@ const express = require('express');
 const cors = require('cors');
 const qrcode = require('qrcode-terminal');
 require('dotenv').config();
-const puppeteer = require('puppeteer-core');
+const puppeteer = require('puppeteer');
 
 (async () => {
-  const browser = await puppeteer.launch({
-    executablePath: process.env.CHROMIUM_PATH || 'C:\chromium\chrome.exe',
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
-  });
+    const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      });
 
   const page = await browser.newPage();
   await page.goto('https://example.com');
