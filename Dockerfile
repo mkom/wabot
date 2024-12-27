@@ -2,7 +2,7 @@
 FROM debian:latest
 
 # Use an appropriate base image that includes Node.js (e.g., official Node.js image)
-FROM node:14-slim
+FROM node:18-slim
 
 RUN apt-get update \
     && apt-get install -y wget gnupg \
