@@ -8,8 +8,22 @@ FROM node:21.1.0
 RUN apt-get update && apt-get install -y \
     curl \
     gnupg \
-    ca-certificates \
-    chromium
+    ca-certificates
+
+
+    # Install Chromium and necessary libraries
+RUN apt-get update && apt-get install -y \
+  chromium \
+  fonts-liberation \
+  libappindicator3-1 \
+  libasound2 \
+  libx11-xcb1 \
+  xdg-utils \
+  wget \
+  && rm -rf /var/lib/apt/lists/*
+
+# Set the environment variable for Puppeteer to know where Chromium is
+ENV CHROMIUM_PATH=/usr/bin/chromium
 
 # Verify that Chromium was installed successfully
 RUN which chromium
