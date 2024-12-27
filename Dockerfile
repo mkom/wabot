@@ -2,34 +2,34 @@
 FROM debian:latest
 
 # Use an appropriate base image that includes Node.js (e.g., official Node.js image)
-FROM node:21.1.0
+FROM node:14-slim
 
-# Install necessary dependencies and Chromium
-RUN apt-get update && apt-get install -y \
-    curl \
-    gnupg \
-    ca-certificates
+RUN apt-get update \
+    && apt-get install -y wget gnupg \
+    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
+      --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
 
 
-    # Install Chromium and necessary libraries
-RUN apt-get update && apt-get install -y \
-  chromium \
-  fonts-liberation \
-  libappindicator3-1 \
-  libasound2 \
-  libx11-xcb1 \
-  xdg-utils \
-  wget \
-  && rm -rf /var/lib/apt/lists/*
+RUN npm init -y &&  \
+    npm i puppeteer \
+    # Add user so we don't need --no-sandbox.
+    # same layer as npm install to keep re-chowned files from using up several hundred MBs more space
+    && groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
+    && mkdir -p /home/pptruser/Downloads \
+    && chown -R pptruser:pptruser /home/pptruser \
+    && chown -R pptruser:pptruser /node_modules \
+    && chown -R pptruser:pptruser /package.json \
+    && chown -R pptruser:pptruser /package-lock.json
 
-# Set the environment variable for Puppeteer to know where Chromium is
-ENV CHROMIUM_PATH=/usr/bin/chromium
+# Run everything after as non-privileged user.
+USER pptruser
 
-# Verify that Chromium was installed successfully
-RUN which chromium
+CMD ["google-chrome-stable"]
 
-# Optionally, you can check the Chromium version
-RUN chromium --version
 # Set work directory
 WORKDIR /app
 
