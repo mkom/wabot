@@ -3,7 +3,19 @@ const express = require('express');
 const cors = require('cors');
 const qrcode = require('qrcode-terminal');
 require('dotenv').config();
+const puppeteer = require('puppeteer');
 
+(async () => {
+  const browser = await puppeteer.launch({
+    executablePath: process.env.CHROMIUM_PATH || 'C:\chromium\chrome.exe',
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  });
+
+  const page = await browser.newPage();
+  await page.goto('https://example.com');
+  console.log(await page.title());
+  await browser.close();
+})();
 
 //Membuat instance client dengan autentikasi lokal
 const client = new Client({
