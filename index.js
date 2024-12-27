@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const qrcode = require('qrcode-terminal');
 require('dotenv').config();
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
 
 (async () => {
   const browser = await puppeteer.launch({
