@@ -7,6 +7,7 @@ const puppeteer = require('puppeteer');
 
 (async () => {
     const browser = await puppeteer.launch({
+        executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium-browser', // Ensure this path is correct
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
       });
 
