@@ -70,6 +70,10 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
         console.error('Error occurred:', error);
     });
 
+    app.get('/', (req, res) => {
+        res.send('Hello, World!');
+      });
+      
     //endpoint kirim pesan
     app.post('/api/notify', (req, res) => {
         const { number, bodyMessage } = req.body;
