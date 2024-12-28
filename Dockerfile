@@ -16,7 +16,7 @@ RUN apk add --no-cache \
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 ENV PUPPETEER_CACHE_DIR=/home/web/.cache
 
-WORKDIR /usr/src/app
+WORKDIR /
 
 COPY package.json ./
 
