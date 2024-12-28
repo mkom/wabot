@@ -30,7 +30,6 @@ client.on('qr', (qr) => {
 });
 
 client.on('ready', () => {
-    console.log('QR Code:', qr);
     console.log('Client is ready!');
 
     // Mengirim pesan setelah siap
@@ -67,6 +66,6 @@ app.listen(4001, () => {
 });
 
 // Menjalankan client
-client.initialize().catch(err => {
-    console.error('Error initializing WhatsApp client:', err);
-});
+client.initialize()
+    .then(() => console.log('Client initialization started successfully'))
+    .catch(err => console.error('Error initializing WhatsApp client:', err));

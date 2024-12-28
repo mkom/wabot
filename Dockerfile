@@ -21,6 +21,8 @@ WORKDIR /
 COPY package.json ./
 COPY index.js ./
 
+COPY my-session ./my-session
+
 
 RUN npm install
 
